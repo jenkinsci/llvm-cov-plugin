@@ -1,4 +1,4 @@
 <?jelly escape-by-default='true'?>
 <div>
-    This plugin integrates JSON format LLVM-COV reports to Jenkins.
+    This plugin integrates JSON format llvm-cov reports to Jenkins.
 </div>
