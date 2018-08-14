@@ -33,21 +33,21 @@ public class LLVMCoverageParser extends CoverageParser {
                         getAttribute(current, "name", "") + ": " + getReportName());
                 break;
             case "data":
-                result = new CoverageResult(CoverageElement.LLVM_DATA, parentResult,
+                result = new CoverageResult(CoverageElement.get("LLVM Data"), parentResult,
                         getAttribute(current, "name", ""));
                 break;
             case "directory":
-                result = new CoverageResult(CoverageElement.LLVM_DIRECTORY, parentResult,
+                result = new CoverageResult(CoverageElement.get("LLVM Directory"), parentResult,
                         getAttribute(current, "name", ""));
                 break;
             case "file":
-                result = new CoverageResult(CoverageElement.LLVM_FILE, parentResult,
+                result = new CoverageResult(CoverageElement.get("LLVM File"), parentResult,
                         getAttribute(current, "filename", ""));
 
                 result.setRelativeSourcePath(getAttribute(current, "name", null));
                 break;
             case "function":
-                result = new CoverageResult(CoverageElement.LLVM_FUNCTION, parentResult,
+                result = new CoverageResult(CoverageElement.get("LLVM Function"), parentResult,
                         getAttribute(current, "name", ""));
                 break;
             case "line":
