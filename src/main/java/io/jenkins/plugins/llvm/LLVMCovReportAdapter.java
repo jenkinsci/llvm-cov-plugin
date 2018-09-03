@@ -51,7 +51,7 @@ public class LLVMCovReportAdapter extends JSONCoverageReportAdapter {
     }
 
 
-    @Symbol("llvm")
+    @Symbol({"llvm-adapter", "llvm"})
     @Extension
     public static class LLVMCovReportAdapterDescriptor extends CoverageReportAdapterDescriptor<CoverageReportAdapter> {
 

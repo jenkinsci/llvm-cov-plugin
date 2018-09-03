@@ -1,5 +1,7 @@
 # llvm-cov-plugin
 
+You can use this plugin in [Jenkins Experimental Update Center](https://jenkins.io/doc/developer/publishing/releasing-experimental-updates/#configuring-jenkins-to-use-experimental-update-center).
+
 This plugin allows you to capture JSON format code coverage reports from [llvm-cov](https://llvm.org/docs/CommandGuide/llvm-cov.html). It implements code-coverage-api-plugin and can generate coverage chart, coverage trend chart and source code with coverage navigation. 
 
 ## How to use it
