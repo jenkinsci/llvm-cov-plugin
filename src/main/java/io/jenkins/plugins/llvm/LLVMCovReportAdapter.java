@@ -51,7 +51,7 @@ public class LLVMCovReportAdapter extends JSONCoverageReportAdapter {
     }
 
 
-    @Symbol({"llvm-adapter", "llvm"})
+    @Symbol(value = {"llvmAdapter", "llvm"})
     @Extension
     public static class LLVMCovReportAdapterDescriptor extends CoverageReportAdapterDescriptor<CoverageReportAdapter> {
 
@@ -65,6 +65,11 @@ public class LLVMCovReportAdapter extends JSONCoverageReportAdapter {
                     new CoverageElement("LLVM Directory", 1),
                     new CoverageElement("LLVM File", 2),
                     new CoverageElement("LLVM Function", 3));
+        }
+
+        @Override
+        public String getCoverageElementType() {
+            return "llvm-cov";
         }
 
         @Nonnull
