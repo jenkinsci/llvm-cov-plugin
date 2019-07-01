@@ -44,7 +44,7 @@ public class LLVMCoverageParser extends CoverageParser {
                 result = new CoverageResult(CoverageElement.get("LLVM File"), parentResult,
                         getAttribute(current, "filename", ""));
 
-                result.setRelativeSourcePath(getAttribute(current, "name", null));
+                result.setRelativeSourcePath(getAttribute(current, "filename", null));
                 break;
             case "function":
                 result = new CoverageResult(CoverageElement.get("LLVM Function"), parentResult,
