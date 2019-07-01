@@ -34,7 +34,7 @@
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>structs</artifactId>
-            <version>1.7</version>
+            <version>1.9</version>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
@@ -86,7 +86,12 @@
         <dependency>
             <groupId>io.jenkins.plugins</groupId>
             <artifactId>code-coverage-api</artifactId>
-            <version>1.0.9</version>
+            <version>1.0.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>scm-api</artifactId>
+            <version>2.4.1</version>
         </dependency>
     </dependencies>
 
