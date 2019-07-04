@@ -32,22 +32,34 @@ public class LLVMCovReportDocumentConverter extends JSONDocumentConverter {
 
         JsonNode dataArr = report.get("data");
 
+        if (dataArr == null || dataArr.size() == 0) {
+            throw new CoverageException("No data section found in coverage report, will skip it");
+        }
 
-        for (int i = 0; i < dataArr.size(); i++) {
+        if (dataArr.size() == 1) {
             Element dataEle = document.createElement("data");
-            dataEle.setAttribute("name", "data" + i);
+            dataEle.setAttribute("name", "data");
             reportEle.appendChild(dataEle);
 
-            JsonNode dataObj = dataArr.get(i);
-
+            JsonNode dataObj = dataArr.get(0);
             processDataObj(dataObj, dataEle, document);
+        } else {
+            for (int i = 0; i < dataArr.size(); i++) {
+                Element dataEle = document.createElement("data");
+                dataEle.setAttribute("name", "data" + i);
+                reportEle.appendChild(dataEle);
+
+                JsonNode dataObj = dataArr.get(i);
+
+                processDataObj(dataObj, dataEle, document);
+            }
         }
 
         return document;
     }
 
     /**
-     * parse each data object in JSON, and convert it to data element and them to document.
+     * parse each data object in JSON, and convert it to data element and then to document.
      *
      * @param dataObj  data object in JSON
      * @param dataEle  data element added to document
@@ -76,7 +88,6 @@ public class LLVMCovReportDocumentConverter extends JSONDocumentConverter {
             dataEle.appendChild(directoryEle);
         });
 
-
         processFunctions(functions, fileElements, document);
     }
 
@@ -96,7 +107,6 @@ public class LLVMCovReportDocumentConverter extends JSONDocumentConverter {
             fileEle.setAttribute("filename", file.get("filename").asText());
 
             JsonNode segments = file.get("segments");
-
 
             processLines(segments, fileEle, document);
 
@@ -170,6 +180,7 @@ public class LLVMCovReportDocumentConverter extends JSONDocumentConverter {
             return;
         }
 
+        // if only has one segment, will convert segment to line if this segment has count
         if (segments.size() == 1) {
             JsonNode seg = segments.get(0);
             if (!isSegmentHasCount(seg)) {
@@ -182,15 +193,18 @@ public class LLVMCovReportDocumentConverter extends JSONDocumentConverter {
             return;
         }
 
+        // we group segments by line number
         LinkedHashMap<Integer, List<JsonNode>> segmentsWithLineNum = segments
                 .stream()
                 .collect(Collectors.groupingBy(s -> s.get(0).asInt(),
-                        LinkedHashMap::new, Collectors.toList())); // group by segment's line number
+                        LinkedHashMap::new, Collectors.toList()));
 
 
         Iterator<Map.Entry<Integer, List<JsonNode>>> lineIterator = segmentsWithLineNum.entrySet().iterator();
 
         Map.Entry<Integer, List<JsonNode>> previousLine = lineIterator.next();
+
+        // process the first line of segments
         processLine(fileEle, document, previousLine.getKey(), previousLine.getValue());
 
         while (lineIterator.hasNext()) {
@@ -200,7 +214,6 @@ public class LLVMCovReportDocumentConverter extends JSONDocumentConverter {
             if (currentLineNum < previousLineNum) {
                 throw new CoverageException(String.format("Not a valid segment sequences in file %s", fileEle.getAttribute("filename")));
             }
-
 
             if (currentLine.getKey() - previousLine.getKey() == 1) {
                 processLine(fileEle, document, currentLine.getKey(), currentLine.getValue());

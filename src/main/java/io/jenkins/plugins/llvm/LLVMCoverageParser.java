@@ -70,7 +70,6 @@ public class LLVMCoverageParser extends CoverageParser {
                 break;
         }
 
-
         return result;
     }
 
