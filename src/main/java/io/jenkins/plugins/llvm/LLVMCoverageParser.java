@@ -3,6 +3,7 @@ package io.jenkins.plugins.llvm;
 import io.jenkins.plugins.coverage.adapter.parser.CoverageParser;
 import io.jenkins.plugins.coverage.targets.CoverageElement;
 import io.jenkins.plugins.coverage.targets.CoverageResult;
+import io.jenkins.plugins.coverage.targets.Ratio;
 import org.w3c.dom.Element;
 
 public class LLVMCoverageParser extends CoverageParser {
@@ -45,17 +46,30 @@ public class LLVMCoverageParser extends CoverageParser {
                         getAttribute(current, "filename", ""));
 
                 result.setRelativeSourcePath(getAttribute(current, "filename", null));
-                break;
-            case "function":
-                result = new CoverageResult(CoverageElement.get("LLVM Function"), parentResult,
-                        getAttribute(current, "name", ""));
+
+
+                String coveredLineStr = getAttribute(current, "line-covered", "0");
+                String totalLineStr = getAttribute(current, "line-total", coveredLineStr);
+                result.updateCoverage(CoverageElement.LINE, Ratio.create(Integer.parseInt(coveredLineStr), Integer.parseInt(totalLineStr)));
+
+                String coveredFuncStr = getAttribute(current, "func-covered", "0");
+                String totalFuncStr = getAttribute(current, "func-total", coveredFuncStr);
+                result.updateCoverage(CoverageElement.get("LLVM Function"), Ratio.create(Integer.parseInt(coveredFuncStr), Integer.parseInt(totalFuncStr)));
+
                 break;
             case "line":
-                processLine(current, parentResult);
+                String hitsString = current.getAttribute("hits");
+                String lineNumber = current.getAttribute("number");
+
+                int hits = Integer.parseInt(hitsString);
+                int number = Integer.parseInt(lineNumber);
+
+                parentResult.paint(number, hits);
                 break;
             default:
                 break;
         }
+
         return result;
     }
 
