@@ -17,9 +17,9 @@ import java.util.stream.StreamSupport;
 public class LLVMCovReportDocumentConverter extends JSONDocumentConverter {
     @Override
     protected Document convert(JsonNode report, Document document) throws CoverageException {
-        // only support 2.0.0 version now
-        if (!report.get("version").asText().equals("2.0.0")) {
-            throw new CoverageException("Unsupported Json file - version must be 2.0.0");
+        // only support 2.0.x version now
+        if (!report.get("version").asText().startsWith("2.0.")) {
+            throw new CoverageException("Unsupported Json file - version must be 2.0.x");
         }
 
         if (!report.get("type").asText().equals("llvm.coverage.json.export")) {
