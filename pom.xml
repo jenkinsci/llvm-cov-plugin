@@ -86,7 +86,7 @@
         <dependency>
             <groupId>io.jenkins.plugins</groupId>
             <artifactId>code-coverage-api</artifactId>
-            <version>1.0.11</version>
+            <version>1.4.1</version>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
